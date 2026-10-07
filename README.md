@@ -2,7 +2,7 @@
 
 API REST para gerenciar **pacientes, médicos e consultas** de uma clínica, desenvolvida em **C# / .NET 10** com **Entity Framework Core (ORM)**, **SQLite**, **DTOs** e **mappers manuais**.
 
-Projeto acadêmico do trabalho N2 da disciplina **Programação Server-Side**, do curso de Engenharia de Software da **Católica SC**.
+Projeto acadêmico da disciplina **Programação Server-Side**, do curso de Engenharia de Software da **Católica SC**.
 
 ## Tecnologias
 
