@@ -1,14 +1,15 @@
 using ApiClinica.DTOs;
+using ApiClinica.Interfaces;
 using ApiClinica.Models;
 using ApiClinica.Validations;
 
 namespace ApiClinica.Mappers;
 
-// Mapeamento MANUAL entre Model e DTOs (sem AutoMapper)
-public static class PacienteMapper
+// Mapeamento manual entre entidade Paciente e seus DTOs, sem expor detalhes de persistencia.
+public class PacienteMapper : IPacienteMapper
 {
-    // Model -> DTO de leitura
-    public static PacienteReadDTO ToReadDTO(Paciente p) => new()
+    // Model -> DTO de leitura: formata o CPF para exibição, embora ele seja salvo só com números.
+    public PacienteReadDTO ToReadDTO(Paciente p) => new()
     {
         Id = p.Id,
         Nome = p.Nome,
@@ -18,8 +19,8 @@ public static class PacienteMapper
         Cpf = Validador.FormatarCpf(p.Cpf)
     };
 
-    // DTO de criação -> Model
-    public static Paciente ToEntity(PacienteCreateDTO dto) => new()
+    // DTO de criação -> Model: remove espaços e normaliza a data/CPF antes do INSERT.
+    public Paciente ToEntity(PacienteCreateDTO dto) => new()
     {
         Nome = dto.Nome.Trim(),
         Email = dto.Email.Trim(),
@@ -29,8 +30,9 @@ public static class PacienteMapper
     };
 
     // PATCH: só altera os campos que vieram diferentes de null
-    public static void ApplyUpdate(Paciente p, PacienteUpdateDTO dto)
+    public void ApplyUpdate(Paciente p, PacienteUpdateDTO dto)
     {
+        // Cada if interpreta null como "campo não enviado", preservando o valor atual no PATCH.
         if (dto.Nome != null) p.Nome = dto.Nome.Trim();
         if (dto.Email != null) p.Email = dto.Email.Trim();
         if (dto.Telefone != null) p.Telefone = dto.Telefone.Trim();

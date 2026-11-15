@@ -1,6 +1,6 @@
-   bin/
-   obj/
-   *.db
-   *.db-shm
-   *.db-wal
-   .vs/
+bin/
+obj/
+*.db
+*.db-shm
+*.db-wal
+.vs/

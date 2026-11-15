@@ -1,5 +1,6 @@
 namespace ApiClinica.DTOs;
 
+// Contrato da resposta de consulta, com nomes relacionados e horario final calculado.
 public class ConsultaReadDTO
 {
     public int Id { get; set; }

@@ -1,17 +1,23 @@
+﻿<!-- Manifesto do projeto: define o tipo de aplicacao, a versao do .NET e os pacotes usados na compilacao. -->
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
+    <!-- API ASP.NET Core compilada para .NET 10, com referencias e nullable habilitados. -->
     <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>58a9d2d2-5770-4d30-ab8a-f841aaf831d4</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
+    <!-- EF Core + SQLite persistem as entidades e permitem criar/aplicar migrations. -->
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <!-- JWT Bearer valida os tokens enviados nas rotas protegidas. -->
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.0" />
   </ItemGroup>
 
 </Project>

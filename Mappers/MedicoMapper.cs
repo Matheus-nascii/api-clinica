@@ -1,11 +1,14 @@
 using ApiClinica.DTOs;
+using ApiClinica.Interfaces;
 using ApiClinica.Models;
 
 namespace ApiClinica.Mappers;
 
-public static class MedicoMapper
+// Mapeamento manual entre entidade Medico e seus DTOs de entrada e saida.
+public class MedicoMapper : IMedicoMapper
 {
-    public static MedicoReadDTO ToReadDTO(Medico m) => new()
+    // Copia somente os dados públicos que a API devolve ao cliente.
+    public MedicoReadDTO ToReadDTO(Medico m) => new()
     {
         Id = m.Id,
         Nome = m.Nome,
@@ -14,7 +17,8 @@ public static class MedicoMapper
         CRM = m.CRM
     };
 
-    public static Medico ToEntity(MedicoCreateDTO dto) => new()
+    // Normaliza espaços nos dados recebidos antes de persistir o novo médico.
+    public Medico ToEntity(MedicoCreateDTO dto) => new()
     {
         Nome = dto.Nome.Trim(),
         Email = dto.Email.Trim(),
@@ -22,8 +26,9 @@ public static class MedicoMapper
         CRM = dto.CRM.Trim()
     };
 
-    public static void ApplyUpdate(Medico m, MedicoUpdateDTO dto)
+    public void ApplyUpdate(Medico m, MedicoUpdateDTO dto)
     {
+        // Null representa campo ausente no PATCH e, por isso, não sobrescreve o valor salvo.
         if (dto.Nome != null) m.Nome = dto.Nome.Trim();
         if (dto.Email != null) m.Email = dto.Email.Trim();
         if (dto.Telefone != null) m.Telefone = dto.Telefone.Trim();

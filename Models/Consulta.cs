@@ -1,5 +1,6 @@
 namespace ApiClinica.Models;
 
+// Entidade de agendamento que relaciona exatamente um paciente a um medico em uma data/hora.
 public class Consulta
 {
     public int Id { get; set; }

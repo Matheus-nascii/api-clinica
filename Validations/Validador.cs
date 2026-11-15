@@ -2,7 +2,7 @@ using System.Text.RegularExpressions;
 
 namespace ApiClinica.Validations;
 
-// Regras de validação reaproveitadas pelos controllers
+// Regras de validação reaproveitadas pelos services
 public static class Validador
 {
     // Ex.: nome@dominio.com
@@ -14,12 +14,15 @@ public static class Validador
     private static readonly Regex TelefoneRegex =
         new(@"^\(\d{2}\) \d{4,5}-\d{4}$", RegexOptions.Compiled);
 
+    // Primeiro recusa nulo/vazio; só então aplica a expressão regular para evitar aceitar espaços.
     public static bool EmailValido(string? email) =>
         !string.IsNullOrWhiteSpace(email) && EmailRegex.IsMatch(email.Trim());
 
+    // Exige DDD entre parênteses, espaço e número com quatro ou cinco dígitos antes do hífen.
     public static bool TelefoneValido(string? telefone) =>
         !string.IsNullOrWhiteSpace(telefone) && TelefoneRegex.IsMatch(telefone.Trim());
 
+    // Compara apenas a data para não rejeitar nascimento de hoje por causa da hora atual.
     public static bool DataNascValida(DateTime data) => data.Date <= DateTime.Today;
 
     public static string SomenteNumeros(string? texto) =>
@@ -30,8 +33,8 @@ public static class Validador
     {
         var numeros = SomenteNumeros(cpf);
 
-        if (numeros.Length != 11) return false;
-        if (numeros.All(c => c == numeros[0])) return false; // 000.000.000-00, 111..., etc.
+        if (numeros.Length != 11) return false; // CPF brasileiro sempre possui 11 dígitos.
+        if (numeros.All(c => c == numeros[0])) return false; // Rejeita sequências conhecidamente inválidas.
 
         int[] digitos = numeros.Select(c => c - '0').ToArray();
 
@@ -40,7 +43,7 @@ public static class Validador
         for (int i = 0; i < 9; i++) soma += digitos[i] * (10 - i);
         int resto = soma * 10 % 11;
         if (resto == 10) resto = 0;
-        if (resto != digitos[9]) return false;
+        if (resto != digitos[9]) return false; // O primeiro verificador precisa coincidir antes de testar o segundo.
 
         // 2º dígito verificador: pesos 11..2 sobre os 10 primeiros dígitos
         soma = 0;

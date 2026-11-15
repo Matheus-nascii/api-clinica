@@ -1,5 +1,6 @@
 namespace ApiClinica.Models;
 
+// Entidade persistida na tabela Medicos; representa o profissional que realiza consultas.
 public class Medico
 {
     public int Id { get; set; }

@@ -1,5 +1,6 @@
 namespace ApiClinica.DTOs;
 
+// Contrato da resposta publica de medico, separado da entidade persistida pelo EF Core.
 public class MedicoReadDTO
 {
     public int Id { get; set; }
